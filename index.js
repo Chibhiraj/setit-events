@@ -52,10 +52,10 @@ app.get('/', async (req, res) => {
   }
 });
 
-app.put('/:eventId', async (req, res) => {
+app.put('/:userId', async (req, res) => {
   try {
-    const eventId = req.params.eventId;
-    const {event } = req.body;
+    const eventId = req.params.userId;
+    const {event} = req.body;
     const updatedEvent = await event.findByIdAndUpdate(eventId, {eventName,eventLink }, { new: true });
     if (!updatedEvent) {
       return res.status(404).json({ error: "Event not found" });
@@ -68,9 +68,9 @@ app.put('/:eventId', async (req, res) => {
 });
 
 
-app.delete('/:eventId', async (req, res) => {
+app.delete('/:userId', async (req, res) => {
   try {
-    const eventId = req.params.eventId; 
+    const eventId = req.params.userId; 
     const deletedEvent = await event.findByIdAndDelete(userId);
     if (!deletedEvent) {
       return res.status(404).json({ error: "Event not found" });
@@ -81,6 +81,7 @@ app.delete('/:eventId', async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 
 app.listen(port , () => console.log(`Example app listening on port !`));
