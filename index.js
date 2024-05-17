@@ -23,7 +23,8 @@ dbConn.on("open", function(){
 
 const EventSchema= new mongoose.Schema({
     eventName: String,
-    eventLink: String
+    eventLink: String,
+    eventDate: String
 });
 
 const event=mongoose.model('events',EventSchema);
@@ -31,10 +32,12 @@ const event=mongoose.model('events',EventSchema);
 
 app.post('/', async (req, res) => {
   try {
-    const { eventName,eventLink } = req.body;
-    const newEvent = new event({ eventName,eventLink });
-    await newEvent.save();
+    const {eventName,eventLink,eventDate} = req.body;
+    console.log("Received data:", { eventName, eventLink, eventDate });
+    const newEvent = new event({ eventName,eventLink,dueDate});
+    await newEvent.save()
     res.status(201).json({ message: "Event created successfully" });
+    
   } catch (error) {
     console.error("Error saving event:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -55,8 +58,8 @@ app.get('/', async (req, res) => {
 app.put('/:eventId', async (req, res) => {
   try {
     const eventId = req.params.eventId;
-    const {eventName,eventLink} = req.body;
-    const updatedEvent = await event.findByIdAndUpdate(eventId, {eventName,eventLink}, { new: true });
+    const {eventName,eventLink,eventDate} = req.body;
+    const updatedEvent = await event.findByIdAndUpdate(eventId, {eventName,eventLink,eventDate}, { new: true });
     if (!updatedEvent) {
       return res.status(404).json({ error: "Event not found" });
     }
