@@ -34,7 +34,7 @@ app.post('/', async (req, res) => {
   try {
     const {eventName,eventLink,eventDate} = req.body;
     console.log("Received data:", { eventName, eventLink, eventDate });
-    const newEvent = new event({ eventName,eventLink,dueDate});
+    const newEvent = new event({ eventName,eventLink,eventDate});
     await newEvent.save()
     res.status(201).json({ message: "Event created successfully" });
     
